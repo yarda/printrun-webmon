@@ -1,6 +1,6 @@
 This is an KISS web monitor for printrun / pronterface written in PHP.
 Copyright (C) 2016  Jaroslav Škarvada <jskarvad@redhat.com>
-The code is copyied under GPLv3. Use it on your own risk.
+The code is copied under GPLv3. Use it on your own risk.
 
 For webcam access it requires streamer from the following package:
  - xawtv
