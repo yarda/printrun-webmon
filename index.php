@@ -40,9 +40,8 @@ function print_array($arr)
 
 function insert_img($id, $img_res, $delay)
 {
-  $img = "img/img" . $id . ".jpeg";
   $id = strval($id);
-  if (!strlen(strval($id)))
+  if (!strlen($id))
     return;
   $img = "img/img" . $id . ".jpeg";
   if (!file_exists($img) || (time() - filemtime($img) > $delay))
