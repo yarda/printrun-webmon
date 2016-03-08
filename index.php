@@ -9,6 +9,8 @@ $img_cache_delay = 1;
 $video_dev_pref = "/dev/video";
 // resolution of images
 $img_res = "320x240";
+// number of images in row (i.e. number of columns)
+$images_in_row = 3;
 // safety stop when searching for pronterfaces, if anything goes bad
 // do not probe for more than NUM pronterfaces, under normal conditions
 // it stops probing earlier
@@ -38,7 +40,7 @@ function print_array($arr)
     echo(substr($s, 0, -2));
 }
 
-function insert_img($id, $img_res, $delay)
+function insert_img($id, $img_res, $delay, $html_prefix, $html_suffix)
 {
   $id = strval($id);
   if (!strlen($id))
@@ -61,9 +63,9 @@ function insert_img($id, $img_res, $delay)
   }
   if (file_exists($img))
   {
-    echo("<p style='text-align:center'>\n");
-    echo("<img src='" . $img . "' />\n");
-    echo("</p>\n");
+    echo($html_prefix);
+    echo("<img src='" . $img . "' />");
+    echo($html_suffix);
   }
 }
 
@@ -94,7 +96,7 @@ function insert_status($host, $port, $header)
     echo("<p>xmlrpc: $response[faultString] ($response[faultCode])</p>\n");
   else
   {
-    echo("<table border='border' style='margin-left:auto; margin-right:auto; margin-bottom: 1em; min-width:60em; border:1px; text-align: center'>\n");
+    echo("<table border='border' style='margin-left:auto; margin-right:auto; margin-bottom:1em; min-width:60em; border:1px; text-align:center'>\n");
     echo("<tr><th colspan='2'>Extruder temp</th><th colspan='2'>Bed temp</th><th rowspan='2'>Progress</th><th rowspan='2'>ETA</th>");
     echo("<th rowspan='2'>Z</th><th rowspan='2'>Filename</th></tr>\n");
     echo("<tr><th>Current</th><th>Preset</th><th>Current</th><th>Preset</th></tr>");
@@ -130,8 +132,27 @@ if ($port == $def_port)
   echo("<p>Unable to connect to Pronterface, maybe it is not running.</p>\n");
 
 $vdp_len = strlen($video_dev_pref);
+$cnt = 0;
+echo("<table style='margin-left:auto; margin-right:auto; text-align:center; border-spacing:1em'>\n");
 foreach (glob($video_dev_pref . "[0-9]*") as $f)
-  insert_img(substr($f, $vdp_len), $img_res, $img_cache_delay);
+{
+  if ($cnt % $images_in_row == 0)
+    echo("<tr>");
+  insert_img(substr($f, $vdp_len), $img_res, $img_cache_delay, "<td>", "</td>\n");
+  $cnt++;
+  if ($cnt % $images_in_row == 0)
+    echo("</tr>\n");
+}
+if ($cnt % $images_in_row != 0)
+{
+  while ($cnt % $images_in_row != 0)
+  {
+    echo("<td></td>");
+    $cnt++;
+  }
+  echo("</tr>\n");
+}
 ?>
+</table>
 </body>
 </html>
