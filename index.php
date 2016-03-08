@@ -94,7 +94,7 @@ function insert_status($host, $port, $header)
     echo("<p>xmlrpc: $response[faultString] ($response[faultCode])</p>\n");
   else
   {
-    echo("<table border='border' style='margin-left:auto; margin-right:auto; min-width:60em; border:1px; text-align: center'>\n");
+    echo("<table border='border' style='margin-left:auto; margin-right:auto; margin-bottom: 1em; min-width:60em; border:1px; text-align: center'>\n");
     echo("<tr><th colspan='2'>Extruder temp</th><th colspan='2'>Bed temp</th><th rowspan='2'>Progress</th><th rowspan='2'>ETA</th>");
     echo("<th rowspan='2'>Z</th><th rowspan='2'>Filename</th></tr>\n");
     echo("<tr><th>Current</th><th>Preset</th><th>Current</th><th>Preset</th></tr>");
