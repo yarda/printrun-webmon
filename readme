@@ -9,3 +9,5 @@ and v4l2 support in linux kernel.
 
 For printrun querying it requires:
 - php-xmlrpc
+
+It can handle unlimited number of pronterface instances and webcams.
