@@ -11,3 +11,49 @@ For printrun querying it requires:
 - php-xmlrpc
 
 It can handle unlimited number of pronterface instances and webcams.
+
+If you run webserver on different user than root (which you really
+should), you may need to allow it access to V4L devices. In case
+you run Apache as apache user, just adding apache to the video
+group should do the trick:
+
+# gpasswd -a apache video
+# service httpd restart
+
+
+SELinux
+=======
+
+In case you use SELinux it will require more tweaking. At first
+you need to allow Apache processes to use network sockets:
+# setsebool -P httpd_can_network_connect 1
+
+Next you need to make folder for images writeable by Apache.
+Supposing that the images from the webcameras are stored in the
+'img' folder (which is the default), the following commands will
+create the folder and allow write operations on it:
+# cd /var/www/html
+# mkdir img
+# chcon -R -t httpd_sys_rw_content_t img
+
+Finally you need to create and enable SELinux module which will
+allow Apache processes access to V4L devices. On Fedora the
+following commands will do it:
+
+# dnf install selinux-policy-devel
+# cd /etc/selinux
+# cat > apache_v4l.te  <<:EOF
+module apache_v4l 1.0;
+
+require {
+  class chr_file { open read getattr write ioctl };
+  type httpd_t;
+  type v4l_device_t;
+};
+
+# Enable v4l devices access by apache
+allow httpd_t v4l_device_t:chr_file { open read getattr write ioctl };
+:EOF
+
+# make -f /usr/share/selinux/devel/Makefile apache_v4l.pp
+# semodule -i apache_v4l.pp
