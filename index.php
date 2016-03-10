@@ -1,4 +1,11 @@
 <?php
+/*
+ * This is an KISS (Keep It Simple and Stupid) web monitor for
+ * printrun / pronterface written in PHP.
+ * Copyright (C) 2016  Jaroslav Škarvada <jskarvad@redhat.com>
+ * The code is copied under GPLv3+. Use it on your own risk.
+ */
+
 // RPC defaults
 $host = "localhost";
 $path = "/";
