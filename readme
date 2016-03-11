@@ -34,8 +34,9 @@ Supposing that the images from the webcameras are stored in the
 'img' folder (which is the default), the following commands will
 create the folder and allow write operations on it:
 # cd /var/www/html
-# mkdir img
+# mkdir img data
 # chcon -R -t httpd_sys_rw_content_t img
+# chcon -R -t httpd_sys_rw_content_t data
 
 Finally you need to create and enable SELinux module which will
 allow Apache processes access to V4L devices. On Fedora the
