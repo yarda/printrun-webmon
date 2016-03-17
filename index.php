@@ -14,8 +14,10 @@ $def_port = 7978;
 // how long to cache content in seconds before refresh is needed
 $cache_delay = 5;
 $video_dev_pref = "/dev/video";
+$page_title = "3D printer status";
 // resolution of images
-$img_res = "320x240";
+$img_res_preview = "320x240";
+$img_res_full = "640x480";
 // number of images in row (i.e. number of columns)
 $images_in_row = 3;
 // safety stop when searching for pronterfaces, if anything goes bad
@@ -28,16 +30,27 @@ $status_cache_lock = "/tmp/printrun-webmon-status-cache.lock";
 
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");   // Date in the past
+
+$preview = true;
+if (in_array("cam", $_GET) && strlen($_GET["cam"]))
+{
+  $id = trim(htmlspecialchars($_GET["cam"]));
+  if (preg_match("/^\d+$/", $id))
+    $preview = false;
+}
 ?>
 <html>
 <head>
 <meta http-equiv='PRAGMA' content='NO-CACHE' />
 <meta http-equiv='Expires' content='Sat, 26 Jul 1997 05:00:00 GMT' />
 </head>
-<title>3D printer status</title>
-<body>
-<h1 style='text-align:center'>3D printer status</h1>
 <?php
+$title = $page_title;
+if (!$preview)
+  $title .= " - camera $id";
+echo("<title>$title</title>\n");
+echo("<body>\n");
+echo("<h1 style='text-align:center'>$title</h1>\n");
 
 function print_array($f, $arr)
 {
@@ -57,7 +70,7 @@ function insert_img($id, $img_res, $delay, $html_prefix, $html_suffix)
   $id = strval($id);
   if (!strlen($id))
     return;
-  $img = "img/img" . $id . ".jpeg";
+  $img = "img/img" . $id . "_" . $img_res . ".jpeg";
   if (!file_exists($img) || (time() - filemtime($img) > $delay))
   {
     $fp = fopen($v4l_lock, "w");
@@ -171,29 +184,42 @@ function insert_status($host, $start_port, $delay, $status_cache)
   fclose($fp);
 }
 
-insert_status($host, $def_port, $cache_delay, $status_cache);
-$vdp_len = strlen($video_dev_pref);
-$cnt = 0;
-echo("<table style='margin-left:auto; margin-right:auto; text-align:center; border-spacing:1em'>\n");
-foreach (glob($video_dev_pref . "[0-9]*") as $f)
+if ($preview)
 {
-  if ($cnt % $images_in_row == 0)
-    echo("<tr>");
-  insert_img(substr($f, $vdp_len), $img_res, $cache_delay, "<td>", "</td>\n");
-  $cnt++;
-  if ($cnt % $images_in_row == 0)
-    echo("</tr>\n");
-}
-if ($cnt % $images_in_row != 0)
-{
-  while ($cnt % $images_in_row != 0)
+  insert_status($host, $def_port, $cache_delay, $status_cache);
+  $vdp_len = strlen($video_dev_pref);
+  $cnt = 0;
+  echo("<table style='margin-left:auto; margin-right:auto; text-align:center; border-spacing:1em'>\n");
+  foreach (glob($video_dev_pref . "[0-9]*") as $f)
   {
-    echo("<td></td>");
+    if ($cnt % $images_in_row == 0)
+      echo("<tr>");
+    $id = substr($f, $vdp_len);
+    insert_img($id, $img_res_preview, $cache_delay, "<td><a href='?cam=$id'", "</a></td>\n");
     $cnt++;
+    if ($cnt % $images_in_row == 0)
+      echo("</tr>\n");
   }
-  echo("</tr>\n");
+  if ($cnt % $images_in_row != 0)
+  {
+    while ($cnt % $images_in_row != 0)
+    {
+      echo("<td></td>");
+      $cnt++;
+    }
+    echo("</tr>\n");
+  }
+  echo("</table>\n");
+}
+else
+{
+// individual image
+  if ($id != "")
+  {
+    insert_img($id, $img_res_full, $cache_delay, "", "");
+    echo("<p style='text-align:center'>[&nbsp;<a href='javascript:history.go(-1)'>Back</a>&nbsp;]</p>\n");
+  }
 }
 ?>
-</table>
 </body>
 </html>
