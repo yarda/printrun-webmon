@@ -32,7 +32,7 @@ header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");   // Date in the past
 
 $preview = true;
-if (in_array("cam", $_GET) && strlen($_GET["cam"]))
+if (array_key_exists("cam", $_GET) && strlen($_GET["cam"]))
 {
   $id = trim(htmlspecialchars($_GET["cam"]));
   if (preg_match("/^\d+$/", $id))
