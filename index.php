@@ -216,7 +216,7 @@ else
 // individual image
   if ($id != "")
   {
-    insert_img($id, $img_res_full, $cache_delay, "", "");
+    insert_img($id, $img_res_full, $cache_delay, "<p style='text-align:center'>", "</p>");
     echo("<p style='text-align:center'>[&nbsp;<a href='javascript:history.go(-1)'>Back</a>&nbsp;]</p>\n");
   }
 }
