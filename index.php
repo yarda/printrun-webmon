@@ -12,7 +12,7 @@ $path = "/";
 $def_port = 7978;
 
 // how long to cache content in seconds before refresh is needed
-$cache_delay = 1;
+$cache_delay = 5;
 $video_dev_pref = "/dev/video";
 // resolution of images
 $img_res = "320x240";
