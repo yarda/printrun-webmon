@@ -195,7 +195,7 @@ if ($preview)
     if ($cnt % $images_in_row == 0)
       echo("<tr>");
     $id = substr($f, $vdp_len);
-    insert_img($id, $img_res_preview, $cache_delay, "<td><a href='?cam=$id'", "</a></td>\n");
+    insert_img($id, $img_res_preview, $cache_delay, "<td><a href='?cam=$id'>", "</a></td>\n");
     $cnt++;
     if ($cnt % $images_in_row == 0)
       echo("</tr>\n");
