@@ -79,7 +79,7 @@ function insert_img($id, $img_res, $delay, $html_prefix, $html_suffix)
     {
       if (!file_exists($img) || (time() - filemtime($img) > $delay))
       {
-        shell_exec("streamer -c /dev/video" . $id . " -b 16 -s $img_res -o /tmp/img.jpeg");
+        shell_exec("streamer -q -c /dev/video" . $id . " -b 16 -s $img_res -o /tmp/img.jpeg");
         rename("/tmp/img.jpeg", $img);
       }
       flock($fp, LOCK_UN);
