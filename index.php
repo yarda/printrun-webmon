@@ -12,7 +12,7 @@ $path = "/";
 $def_port = 7978;
 
 // how long to cache content in seconds before refresh is needed
-$cache_delay = 5;
+$cache_delay = 2;
 $video_dev_pref = "/dev/video";
 $page_title = "3D printer status";
 // resolution of images
