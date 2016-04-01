@@ -17,7 +17,7 @@ $video_dev_pref = "/dev/video";
 $page_title = "3D printer status";
 // resolution of images
 $img_res_preview = "320x240";
-$img_res_full = "640x480";
+$img_res_full = "1280x720";
 // number of images in row (i.e. number of columns)
 $images_in_row = 3;
 // safety stop when searching for pronterfaces, if anything goes bad
