@@ -35,8 +35,9 @@ Supposing that the images from the webcameras are stored in the
 create the folder and allow write operations on it:
 # cd /var/www/html
 # mkdir img data
-# chcon -R -t httpd_sys_rw_content_t img
-# chcon -R -t httpd_sys_rw_content_t data
+# semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/data(/.*)?"
+# semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/img(/.*)?"
+# restorecon -Rv /var/www/html/*
 
 Finally you need to create and enable SELinux module which will
 allow Apache processes access to V4L devices. On Fedora the
