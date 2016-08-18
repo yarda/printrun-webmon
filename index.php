@@ -28,6 +28,7 @@ $status_cache = "data/status-cache";
 $v4l_lock = "/tmp/printrun-webmon-v4l.lock";
 $status_cache_lock = "/tmp/printrun-webmon-status-cache.lock";
 
+header("Pragma: no-cache");
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");   // Date in the past
 
@@ -41,8 +42,8 @@ if (array_key_exists("cam", $_GET) && strlen($_GET["cam"]))
 ?>
 <html>
 <head>
-<meta http-equiv='PRAGMA' content='NO-CACHE' />
-<meta http-equiv='Expires' content='Sat, 26 Jul 1997 05:00:00 GMT' />
+<meta http-equiv='pragma' content='no-cache' />
+<meta http-equiv='expires' content='Sat, 26 Jul 1997 05:00:00 GMT' />
 </head>
 <?php
 $title = $page_title;
