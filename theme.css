@@ -1,0 +1,55 @@
+html, body {
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+  font-size:14px;
+  background-color: #111;
+}
+
+#menu {
+  float: right;
+  width: 30%;
+  height: 100%;
+  overflow: auto;
+  background-color: #DDD;
+}
+
+#cameras {
+  overflow: auto;
+  right: 30%;
+  left: 0%;
+  height: 100%;
+  text-align: center;
+}
+
+#mainCamera {
+  width: 100%;
+}
+
+.printer {
+  margin: 2%;
+  padding: 2%;
+  width: 95%;
+  background-color: #00F;
+  color: white;
+  font-size: 1.2em;
+}
+.printer big {
+  font-size: 1.5em;
+}
+
+#rightbottom {
+  position: absolute;
+  bottom: 0em;
+  width: 30%;
+  background-color: #DDD;
+}
+#controls {
+  margin: 1em;
+}
+#controls .slider {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
