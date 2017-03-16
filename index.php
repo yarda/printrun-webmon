@@ -29,7 +29,7 @@ $camera = @intval($_GET["camera"]);
 foreach (glob($video_dev_pref."*") as $filename) {
   $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
 }
-//unset($cameras[$camera]);
+unset($cameras[$camera]);
 ?>
 <img data-src="camera.php?id=<?php echo $camera ?>&amp;full" id="mainCamera" class="camera">
 <div class="othercameras">
@@ -83,7 +83,7 @@ function refresh()
 {
   console.log("reloading...");
   $(".camera").each(function() {
-    $(this).attr("src", $(this).attr("data-src")+"#"+new Date().getTime());
+    $(this).attr("src", $(this).attr("data-src")+"&"+new Date().getTime());
   });
   $("#printers").load("printers.php");
 }

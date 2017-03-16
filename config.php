@@ -11,8 +11,8 @@ $host = "localhost";
 $path = "/";
 $def_port = 7978;
 
-// how long to cache content in seconds before refresh is needed
-$cache_delay = 2;
+$delay = 2; // how long to cache cameras output before new shot is captured
+$cache_delay = 2; // how long to cache in browser in seconds before refresh is needed
 $video_dev_pref = "/dev/video";
 $page_title = "3D printer status";
 // resolution of images
