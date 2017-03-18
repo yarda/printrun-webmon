@@ -85,7 +85,7 @@ function insert_status($host, $start_port, $delay, $status_cache)
         while ($port - $start_port < $printers_max && ($stat = query_pronterface($f, $host, $port, $reqheader)) != 0)
           $port++;
         if ($port == $start_port)
-          fprintf($f, "%s\n", "<p>Unable to connect to Pronterface, maybe it is not running.</p>");
+          fprintf($f, "%s\n", "<div class='error'>Unable to connect to Pronterface, maybe it is not running.</div>");
         fclose($f);
         rename($status_cache . ".tmp", $status_cache);
       }

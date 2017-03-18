@@ -1,4 +1,8 @@
-<?php require("config.php"); ?>
+<?php
+require("config.php");
+$camera = @intval($_GET["camera"]);
+$fullscreen = isset($_GET["fullscreen"]);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +13,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.css" type="text/css" />
   <title><?php echo $page_title ?></title>
-<body>
+<body class="<?php echo $fullscreen ? "fullscreen" : "" ?>">
 
 <div id="menu">
   <div id="printers"></div>
@@ -24,21 +28,24 @@
 </div>
 
 <div id="cameras">
-<?php
-$camera = @intval($_GET["camera"]);
-foreach (glob($video_dev_pref."*") as $filename) {
-  $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
-}
-unset($cameras[$camera]);
-?>
-<img data-src="camera.php?id=<?php echo $camera ?>&amp;full" id="mainCamera" class="camera">
-<div class="othercameras">
-  <?php foreach($cameras as $c => $_) { ?>
-    <a href="./?camera=<?php echo $c ?>">
-      <img data-src="camera.php?id=<?php echo $c ?>" class="camera">
-    </a>
+  <a href="./?camera=<?php echo $camera . ($fullscreen ? "" : "&fullscreen") ?>">
+    <img data-src="camera.php?id=<?php echo $camera ?>&amp;full" id="mainCamera" class="camera">
+  </a>
+  <?php
+    if (!$fullscreen) {
+    foreach (glob($video_dev_pref."*") as $filename) {
+      $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
+    }
+    unset($cameras[$camera]);
+    ?>
+    <div class="othercameras">
+      <?php foreach($cameras as $c => $_) { ?>
+        <a href="./?camera=<?php echo $c ?>">
+          <img data-src="camera.php?id=<?php echo $c ?>" class="camera">
+        </a>
+      <?php } ?>
+    </div>
   <?php } ?>
-</div>
 </div>
 
 <script>
@@ -47,7 +54,7 @@ $("#saturation").slider({
   orientation: "horizontal",
   range: "min",
   min: 10,
-  max: 500,
+  max: 300,
   value: localStorage.getItem("saturation") ? localStorage.getItem("saturation") : 100,
   change: function(event, ui) {
     localStorage.setItem("saturation", ui.value);
@@ -59,7 +66,7 @@ $("#brightness").slider({
   orientation: "horizontal",
   range: "min",
   min: 10,
-  max: 800,
+  max: 900,
   value: localStorage.getItem("brightness") ? localStorage.getItem("brightness") : 100,
   change: function(event, ui) {
     localStorage.setItem("brightness", ui.value);
@@ -68,8 +75,8 @@ $("#brightness").slider({
 });
 
 function setCameras() {
-  var saturation = localStorage.getItem("saturation");
-  var brightness = localStorage.getItem("brightness");
+  var saturation = localStorage.getItem("saturation") || 100;
+  var brightness = localStorage.getItem("brightness") || 100;
   $(".camera").css("filter",        "saturate("+saturation+"%) brightness("+brightness+"%)");
   $(".camera").css("-webkit-filter","saturate("+saturation+"%) brightness("+brightness+"%)");
   $(".camera").css("-moz-filter",   "saturate("+saturation+"%) brightness("+brightness+"%)");
@@ -79,15 +86,13 @@ function setCameras() {
 }
 setCameras();
 
-function refresh()
-{
+function refresh() {
   console.log("reloading...");
   $(".camera").each(function() {
     $(this).attr("src", $(this).attr("data-src")+"&"+new Date().getTime());
   });
   $("#printers").load("printers.php");
 }
-
 refresh();
 setInterval(refresh, <?php echo $cache_delay * 1000 ?>);
 

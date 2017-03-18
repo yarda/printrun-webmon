@@ -12,6 +12,14 @@ $img_res = isset($_GET["full"]) ? $img_res_full : $img_res_preview;
 
 $img = "img/img{$id}_{$img_res}.jpeg";
 $tmp = "/tmp/img{$id}.jpeg";
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Location: {$img}");
+ob_flush(); flush();
+
+// generate new shot after redirect
 if (!file_exists($img) || (time() - filemtime($img) > $delay))
 {
   $fp = fopen($v4l_lock, "w");
@@ -26,9 +34,3 @@ if (!file_exists($img) || (time() - filemtime($img) > $delay))
   }
   fclose($fp);
 }
-
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Location: {$img}");
-
