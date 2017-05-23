@@ -87,11 +87,15 @@ function setCameras() {
 setCameras();
 
 function refresh() {
-  console.log("reloading...");
-  $(".camera").each(function() {
-    $(this).attr("src", $(this).attr("data-src")+"&"+new Date().getTime());
-  });
-  $("#printers").load("printers.php");
+  if (document.visibilityState == "visible") {
+    console.log("reloading...");
+    $(".camera").each(function() {
+      $(this).attr("src", $(this).attr("data-src")+"&"+new Date().getTime());
+    });
+    $("#printers").load("printers.php");
+  } else {
+    console.log("not visible - skipping reload...");
+  }
 }
 refresh();
 setInterval(refresh, <?php echo $cache_delay * 1000 ?>);
