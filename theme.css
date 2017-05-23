@@ -27,6 +27,16 @@ html, body {
   width: 100%;
 }
 
+.fullscreen #mainCamera {
+  height: 99%;
+}
+.fullscreen #cameras {
+  right: 0%;
+}
+.fullscreen #menu {
+  display: none;
+}
+
 .printer {
   margin: 2%;
   padding: 2%;
@@ -37,6 +47,12 @@ html, body {
 }
 .printer big {
   font-size: 1.5em;
+}
+
+#printers .error {
+  margin: 1em;
+  padding: 1em;
+  background-color: #FCC;
 }
 
 #rightbottom {
