@@ -24,6 +24,14 @@ $fullscreen = isset($_GET["fullscreen"]);
       Brightness
       <div id="brightness" class="slider"></div>
     </div>
+<?php
+if ($homepage)
+{
+  echo "<div id=\"homepage\">";
+  echo "<a href=\"$homepage\">Home page</a>";
+  echo "</div>";
+}
+?>
   </div>
 </div>
 

@@ -1,7 +1,8 @@
+Introduction
+============
+
 This is an KISS (Keep It Simple and Stupid) web monitor for
 printrun / pronterface written in PHP.
-Copyright (C) 2016  Jaroslav Škarvada <jskarvad@redhat.com>
-The code is copied under GPLv3+. Use it on your own risk.
 
 For webcam access it requires streamer from the following package:
  - xawtv
@@ -60,3 +61,36 @@ allow httpd_t v4l_device_t:chr_file { open read getattr write ioctl };
 
 # make -f /usr/share/selinux/devel/Makefile apache_v4l.pp
 # semodule -i apache_v4l.pp
+
+
+Development
+===========
+
+The most of the development is done on GitHub:
+https://github.com/yarda/printrun-webmon
+
+In case you are not familiar with GitHub you can also sent
+patches directly to: jskarvad AT redhat.com
+
+
+License
+=======
+
+Copyright (C) 2016-2018 Jaroslav Škarvada <jskarvad AT redhat.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 3
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA.
+
+Full text of the license is enclosed in COPYING file.

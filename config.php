@@ -27,3 +27,5 @@ $status_cache = "data/status-cache";
 $v4l_lock = "/tmp/printrun-webmon-v4l.lock";
 $status_cache_lock = "/tmp/printrun-webmon-status-cache.lock";
 
+// project home page for self-advertising :) empty string to disable
+$homepage = "https://github.com/yarda/printrun-webmon";

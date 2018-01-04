@@ -68,4 +68,6 @@ html, body {
   width: 100%;
   margin-bottom: 0.5em;
 }
-
+#homepage {
+  text-align: center;
+}
