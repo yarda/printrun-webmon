@@ -8,15 +8,15 @@
 
 require("config.php");
 
-function print_array($f, $arr)
+function format_time($t)
 {
-  $s = "";
-  if (!$arr)
-    return;
-  foreach ($arr as $i)
-    $s .= gmdate("H:i:s", round(intval($i))) . "; ";
-  if (strlen($s) > 0)
-    fprintf($f, "%s", substr($s, 0, -2));
+  return gmdate("H:i:s", intval($t));
+}
+
+function print_eta($f, $arr)
+{
+  if (count($arr) == 3)
+    fprintf($f, "%s / %s ; %5.2f%%", format_time($arr[0]), format_time($arr[1]), floatval($arr[2]) * 100);
 }
 
 function query_pronterface($f, $host, $port, $header)
@@ -53,7 +53,7 @@ function query_pronterface($f, $host, $port, $header)
     fprintf($f, "<th>Bed temp</th><td><big><b>%.2f</b> ➡ %.2f</big></td></tr>", $response["temps"]["B"][0], $response["temps"]["B"][1]);
     fprintf($f, "<tr><th>Filename</th><td colspan='3'>%s</td></tr>", print_r($response["filename"], true));
     fprintf($f, "<tr><th>ETA</th><td colspan='3'>");
-    print_array($f, $response["eta"]);
+    print_eta($f, $response["eta"]);
     fprintf($f, "</td></tr>");
     fprintf($f, "</table>\n");
   }
@@ -104,4 +104,3 @@ function insert_status($host, $start_port, $delay, $status_cache)
 }
 
 insert_status($host, $def_port, $cache_delay, $status_cache);
-
