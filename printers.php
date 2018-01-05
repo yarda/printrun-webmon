@@ -25,7 +25,7 @@ function print_eta($f, $arr)
     // progress in percentage is reported if the type is double
     // (probably dupe of progress reported by different progress field)
     elseif (is_double($arr[2]))
-      fprintf($f, "%5.2f %%", format_time($arr[2]));
+      fprintf($f, "%5.2f %%", floatval($arr[2]) * 100);
     // report it as is in case of API change
     else
       fprintf($f, "%s", $arr[2]);
