@@ -23,7 +23,7 @@ function print_eta($f, $arr, $progress)
     if (is_integer($arr[2]))
     {
       fprintf($f, "idx: %d", intval($arr[2]));
-      progress = floatval($progress);
+      $progress = floatval($progress);
       if ($progress > 0)
         fprintf($f, " / %d", intval(round($arr[2] * 100 / $progress)));
     }
