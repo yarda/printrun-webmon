@@ -16,7 +16,20 @@ function format_time($t)
 function print_eta($f, $arr)
 {
   if (count($arr) == 3)
-    fprintf($f, "%s / %s ; %5.2f%%", format_time($arr[0]), format_time($arr[1]), floatval($arr[2]) * 100);
+  {
+    fprintf($f, "%s / %s, ", format_time($arr[0]), format_time($arr[1]));
+    // $arr[2] (i.e. progress) seems to be polymorphic
+    // queue index is reported if the type is integer
+    if (is_integer($arr[2]))
+      fprintf($f, "index: %d", intval($arr[2]));
+    // progress in percentage is reported if the type is double
+    // (probably dupe of progress reported by different progress field)
+    elseif (is_double($arr[2]))
+      fprintf($f, "%5.2f %%", format_time($arr[2]));
+    // report it as is in case of API change
+    else
+      fprintf($f, "%s", $arr[2]);
+  }
 }
 
 function query_pronterface($f, $host, $port, $header)
