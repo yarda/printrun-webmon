@@ -13,7 +13,7 @@ function format_time($t)
   return gmdate("H:i:s", intval($t));
 }
 
-function print_eta($f, $arr)
+function print_eta($f, $arr, $progress)
 {
   if (count($arr) == 3)
   {
@@ -21,7 +21,12 @@ function print_eta($f, $arr)
     // $arr[2] (i.e. progress) seems to be polymorphic
     // queue index is reported if the type is integer
     if (is_integer($arr[2]))
-      fprintf($f, "index: %d", intval($arr[2]));
+    {
+      fprintf($f, "idx: %d", intval($arr[2]));
+      progress = floatval($progress);
+      if ($progress > 0)
+        fprintf($f, " / %d", intval(round($arr[2] * 100 / $progress)));
+    }
     // progress in percentage is reported if the type is double
     // (probably dupe of progress reported by different progress field)
     elseif (is_double($arr[2]))
@@ -66,7 +71,7 @@ function query_pronterface($f, $host, $port, $header)
     fprintf($f, "<th>Bed temp</th><td><big><b>%.2f</b> ➡ %.2f</big></td></tr>", $response["temps"]["B"][0], $response["temps"]["B"][1]);
     fprintf($f, "<tr><th>Filename</th><td colspan='3' class='filename'>%s</td></tr>", print_r($response["filename"], true));
     fprintf($f, "<tr><th>ETA</th><td colspan='3'>");
-    print_eta($f, $response["eta"]);
+    print_eta($f, $response["eta"], $response["progress"]);
     fprintf($f, "</td></tr>");
     fprintf($f, "</table>\n");
   }
