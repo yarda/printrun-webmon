@@ -48,6 +48,9 @@ html, body {
 .printer big {
   font-size: 1.5em;
 }
+.printer .filename {
+  word-break: break-all;
+}
 
 #printers .error {
   margin: 1em;
