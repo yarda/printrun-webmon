@@ -66,7 +66,11 @@ function query_pronterface($f, $host, $port, $header)
   {
     fprintf($f, "<table class='printer'>");
     fprintf($f, "<tr><th>Progress</th><td><big>%6.2f%%</big></td>", $response["progress"]);
-    fprintf($f, "<th>Extruder temp</th><td><big><b>%.2f</b> ➡ %.2f</big></td></tr>", $response["temps"]["T0"][0], $response["temps"]["T0"][1]);
+    if (array_key_exists("T0", $response["temps"]))
+      $temp = $response["temps"]["T0"];
+    else
+      $temp = $response["temps"]["T"];
+    fprintf($f, "<th>Extruder temp</th><td><big><b>%.2f</b> ➡ %.2f</big></td></tr>", $temp[0], $temp[1]);
     fprintf($f, "<tr><th>Z</th><td>%s</td>", print_r($response["z"], true));
     fprintf($f, "<th>Bed temp</th><td><big><b>%.2f</b> ➡ %.2f</big></td></tr>", $response["temps"]["B"][0], $response["temps"]["B"][1]);
     fprintf($f, "<tr><th>Filename</th><td colspan='3' class='filename'>%s</td></tr>", print_r($response["filename"], true));
