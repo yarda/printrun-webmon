@@ -50,13 +50,13 @@ following commands will do it:
 module apache_v4l 1.0;
 
 require {
-  class chr_file { open read getattr write ioctl };
+  class chr_file { open read getattr write ioctl map };
   type httpd_t;
   type v4l_device_t;
 };
 
 # Enable v4l devices access by apache
-allow httpd_t v4l_device_t:chr_file { open read getattr write ioctl };
+allow httpd_t v4l_device_t:chr_file { open read getattr write ioctl map };
 :EOF
 
 # make -f /usr/share/selinux/devel/Makefile apache_v4l.pp
