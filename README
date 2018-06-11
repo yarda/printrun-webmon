@@ -5,12 +5,18 @@ This is an KISS (Keep It Simple and Stupid) web monitor for
 printrun / pronterface written in PHP.
 
 For webcam access it requires streamer from the following package:
- - xawtv
+- xawtv
 
 and v4l2 support in linux kernel.
 
 For printrun querying it requires:
+- httpd
+- php
 - php-xmlrpc
+
+These can be installed on Fedora using:
+
+# dnf install xawtv httpd php php-xmlrpc
 
 It can handle unlimited number of pronterface instances and webcams.
 
@@ -28,14 +34,18 @@ SELinux
 
 In case you use SELinux it will require more tweaking. At first
 you need to allow Apache processes to use network sockets:
+
 # setsebool -P httpd_can_network_connect 1
 
 Next you need to make folder for images writeable by Apache.
 Supposing that the images from the webcameras are stored in the
 'img' folder (which is the default), the following commands will
 create the folder and allow write operations on it:
+
 # cd /var/www/html
 # mkdir img data
+# chgrp apache img
+# chmod g+w img
 # semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/data(/.*)?"
 # semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/img(/.*)?"
 # restorecon -Rv /var/www/html/*
@@ -45,8 +55,9 @@ allow Apache processes access to V4L devices. On Fedora the
 following commands will do it:
 
 # dnf install selinux-policy-devel
-# cd /etc/selinux
-# cat > apache_v4l.te  <<:EOF
+# mkdir apache_v4l
+# cd apache_v4l
+# cat > apache_v4l.te <<:EOF
 module apache_v4l 1.0;
 
 require {
@@ -59,7 +70,7 @@ require {
 allow httpd_t v4l_device_t:chr_file { open read getattr write ioctl map };
 :EOF
 
-# make -f /usr/share/selinux/devel/Makefile apache_v4l.pp
+# make -f /usr/share/selinux/devel/Makefile
 # semodule -i apache_v4l.pp
 
 
