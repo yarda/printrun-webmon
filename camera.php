@@ -27,8 +27,11 @@ if (!file_exists($img) || (time() - filemtime($img) > $delay))
   {
     if (!file_exists($img) || (time() - filemtime($img) > $delay))
     {
-      shell_exec("streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}");
-      rename($tmp, $img);
+      exec("streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}", $output, $retval);
+      if ($retval == 0)
+      {
+          rename($tmp, $img);
+      }
     }
     flock($fp, LOCK_UN);
   }

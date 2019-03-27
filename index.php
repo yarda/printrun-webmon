@@ -41,8 +41,10 @@ if ($homepage)
   </a>
   <?php
     if (!$fullscreen) {
-    foreach (glob($video_dev_pref."*") as $filename) {
-      $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
+      foreach (glob($video_dev_pref."*") as $filename) {
+        if (!exec("v4l-info ".escapeshellarg($filename)." 2>&1 1>/dev/null")) {
+          $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
+        }
     }
     unset($cameras[$camera]);
     ?>
