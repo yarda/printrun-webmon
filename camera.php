@@ -19,21 +19,24 @@ header("Pragma: no-cache");
 header("Location: {$img}");
 ob_flush(); flush();
 
-// generate new shot after redirect
-if (!file_exists($img) || (time() - filemtime($img) > $delay))
+if (!in_array($video_dev_pref . $id, $video_dev_blacklist))
 {
-  $fp = fopen($v4l_lock, "w");
-  if (flock($fp, LOCK_EX))
+  // generate new shot after redirect
+  if (!file_exists($img) || (time() - filemtime($img) > $delay))
   {
-    if (!file_exists($img) || (time() - filemtime($img) > $delay))
+    $fp = fopen($v4l_lock, "w");
+    if (flock($fp, LOCK_EX))
     {
-      exec("streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}", $output, $retval);
-      if ($retval == 0)
+      if (!file_exists($img) || (time() - filemtime($img) > $delay))
       {
-          rename($tmp, $img);
+        exec("streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}", $output, $retval);
+        if ($retval == 0)
+        {
+            rename($tmp, $img);
+        }
       }
+      flock($fp, LOCK_UN);
     }
-    flock($fp, LOCK_UN);
+    fclose($fp);
   }
-  fclose($fp);
 }

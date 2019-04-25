@@ -14,6 +14,8 @@ $def_port = 7978;
 $delay = 2; // how long to cache cameras output before new shot is captured
 $cache_delay = 2; // how long to cache in browser in seconds before refresh is needed
 $video_dev_pref = "/dev/video";
+//$video_dev_blacklist = array("/dev/video0", "/dev/video1");
+$video_dev_blacklist = array();
 $page_title = "3D printer status";
 // resolution of images
 $img_res_preview = "320x240";
