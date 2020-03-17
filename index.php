@@ -36,18 +36,27 @@ if ($homepage)
 </div>
 
 <div id="cameras">
-  <a href="./?camera=<?php echo $camera . ($fullscreen ? "" : "&fullscreen") ?>">
-    <img data-src="camera.php?id=<?php echo $camera ?>&amp;full" id="mainCamera" class="camera">
-  </a>
   <?php
     if (!$fullscreen) {
       foreach (array_diff(glob($video_dev_pref."*"), $video_dev_blacklist) as $filename) {
         if (!exec("v4l-info ".escapeshellarg($filename)." 2>&1 1>/dev/null")) {
           $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
         }
+      }
+      if (!array_key_exists(strval($camera), $cameras)) {
+        $first_cam = array_key_first($cameras);
+        if ($first_cam != NULL) {
+          $camera = intval($first_cam);
+        }
+      }
     }
+  ?>
+  <a href="./?camera=<?php echo $camera . ($fullscreen ? "" : "&fullscreen") ?>">
+    <img data-src="camera.php?id=<?php echo $camera ?>&amp;full" id="mainCamera" class="camera">
+  </a>
+  <?php
     unset($cameras[$camera]);
-    ?>
+  ?>
     <div class="othercameras">
       <?php foreach($cameras as $c => $_) { ?>
         <a href="./?camera=<?php echo $c ?>">
@@ -55,7 +64,6 @@ if ($homepage)
         </a>
       <?php } ?>
     </div>
-  <?php } ?>
 </div>
 
 <script>
