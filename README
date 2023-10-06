@@ -13,10 +13,11 @@ For printrun querying it requires:
 - httpd
 - php
 - php-xmlrpc
+- php-fpm
 
 These can be installed on Fedora using:
 
-# dnf install xawtv httpd php php-xmlrpc
+# dnf install xawtv httpd php php-xmlrpc php-fpm
 
 It can handle unlimited number of pronterface instances and webcams.
 
