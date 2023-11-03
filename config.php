@@ -23,6 +23,12 @@ $img_res_full = "1280x720";
 $rulesets = [
   [
     'match_rules' => [
+      ["ID_MODEL", "Integrated_Camera"]
+    ],
+    'action' => 'ignore'
+  ],
+  [
+    'match_rules' => [
       ["ID_V4L_CAPABILITIES", ":"],
     ],
     'action' => 'ignore'
