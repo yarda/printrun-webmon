@@ -13,19 +13,22 @@ $def_port = 7978;
 
 $delay = 2; // how long to cache cameras output before new shot is captured
 $cache_delay = 2; // how long to cache in browser in seconds before refresh is needed
-$video_dev_pref = "/dev/video";
+$video_dev_glob = "/dev/video*";
 //$video_dev_blacklist = array("/dev/video0", "/dev/video1");
 $video_dev_blacklist = array();
 $page_title = "3D printer status";
 // resolution of images
 $img_res_preview = "320x240";
 $img_res_full = "1280x720";
-// arguments of fwswebcam indexed by device file names of cameras to apply them to
-$fwswebcam_args = array(
-    "/dev/video8" => array(
-        "--skip", "45",
-    )
-);
+$rulesets = [
+  [
+    'match_rules' => [
+      ["ID_V4L_CAPABILITIES", ":"],
+    ],
+    'action' => 'ignore'
+  ],
+];
+
 
 // safety stop when searching for pronterfaces, if anything goes bad
 // do not probe for more than NUM pronterfaces, under normal conditions

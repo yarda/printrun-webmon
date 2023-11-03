@@ -1,5 +1,6 @@
 <?php
 require("config.php");
+require("devices.php");
 $camera = @intval($_GET["camera"]);
 $fullscreen = isset($_GET["fullscreen"]);
 ?>
@@ -37,38 +38,8 @@ if ($homepage)
 
 <div id="cameras">
   <?php
-
-    function findVideoCaptureBlock(array $lines) {
-      $isCapturing = false;
-
-      foreach ($lines as $line) {
-        if (!$isCapturing && preg_match('/^video capture/i', $line)) {
-          $isCapturing = true;
-        } elseif ($isCapturing) {
-          if (strpos($line, 'VIDEO_CAPTURE') !== false) {
-            return true;
-          }
-          if (preg_match('/^controls/i', $line)) {
-            $isCapturing = false;
-          }
-        }
-      }
-
-      return false;
-    }
-
     if (!$fullscreen) {
-      $cameras = array();
-      foreach (array_diff(glob($video_dev_pref."*"), $video_dev_blacklist) as $filename) {
-        $retval = null;
-        $output = null;
-        exec("v4l-info ".escapeshellarg($filename)." 2>/dev/null", $output);
-        if (!$retval) {
-          if (findVideoCaptureBlock($output)) {
-            $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
-          }
-        }
-      }
+      $cameras = getCameras($video_dev_glob, $rulesets);
       if (!array_key_exists(strval($camera), $cameras)) {
         $first_cam = array_key_first($cameras);
         if ($first_cam != NULL) {
@@ -80,9 +51,6 @@ if ($homepage)
   <a href="./?camera=<?php echo $camera . ($fullscreen ? "" : "&fullscreen") ?>">
     <img data-src="camera.php?id=<?php echo $camera ?>&amp;full" id="mainCamera" class="camera">
   </a>
-  <?php
-    unset($cameras[$camera]);
-  ?>
     <div class="othercameras">
       <?php foreach($cameras as $c => $_) { ?>
         <a href="./?camera=<?php echo $c ?>">
