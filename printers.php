@@ -15,7 +15,10 @@ function format_time($t)
 
 function print_eta($f, $arr, $progress)
 {
-  if (count($arr) == 3)
+  if ($arr === NULL)
+  {
+    fprintf($f, "Not printing");
+  } elseif (count($arr) == 3)
   {
     fprintf($f, "%s / %s, ", format_time($arr[0]), format_time($arr[1]));
     // $arr[2] (i.e. progress) seems to be polymorphic
