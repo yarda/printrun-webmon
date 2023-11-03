@@ -31,7 +31,12 @@ if (array_key_exists(strval($id), $cameras)) {
     {
       if (!file_exists($img) || (time() - filemtime($img) > $delay))
       {
-        $command = "streamer -q -c {$camera['devicePath']} -b 16 -s {$img_res} -o {$tmp}";
+        if (!isset($camera["fswebcam_args"])) {
+          $command = "streamer -q -c {$camera['devicePath']} -b 16 -s {$img_res} -o {$tmp}";
+        } else {
+          $args = array_map('escapeshellarg', $camera["fswebcam_args"]);
+          $command = "fswebcam -q --no-banner --no-timestamp --device {$camera['devicePath']} --resolution {$img_res} --save {$tmp} ". implode(' ', $args);
+        }
         exec($command, $output, $retval);
         if ($retval == 0)
         {

@@ -87,6 +87,13 @@ function processVideoDevicesInfo($videoDevicesInfo, $rulesets) {
         $includeDevice = false;
         break;
       }
+
+      // Add additional args for fwswebcam if any.
+      if (isset($rules['fswebcam_args'])) {
+        echo "<!-- has fswebcam_args -->\r\n";
+        $deviceInfo['fswebcam_args'] = $rules['fswebcam_args'];
+      }
+
       $rule_index += 1;
     }
 

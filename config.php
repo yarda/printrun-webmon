@@ -27,6 +27,16 @@ $rulesets = [
     ],
     'action' => 'ignore'
   ],
+  [
+    'match_rules' => [
+      ["ID_V4L_CAPABILITIES", ":capture:"],
+      ["ID_MODEL_ID", "704d"],
+      ["ID_VENDOR_ID", "0458"],
+    ],
+    'fswebcam_args' => [
+      "--s", "45"
+    ],
+  ]
 ];
 
 
