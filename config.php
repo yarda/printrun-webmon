@@ -20,6 +20,12 @@ $page_title = "3D printer status";
 // resolution of images
 $img_res_preview = "320x240";
 $img_res_full = "1280x720";
+// arguments of fwswebcam indexed by device file names of cameras to apply them to
+$fwswebcam_args = array(
+    "/dev/video8" => array(
+        "--skip", "45",
+    )
+);
 
 // safety stop when searching for pronterfaces, if anything goes bad
 // do not probe for more than NUM pronterfaces, under normal conditions
