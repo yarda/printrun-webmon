@@ -37,10 +37,36 @@ if ($homepage)
 
 <div id="cameras">
   <?php
+
+    function findVideoCaptureBlock(array $lines) {
+      $isCapturing = false;
+
+      foreach ($lines as $line) {
+        if (!$isCapturing && preg_match('/^video capture/i', $line)) {
+          $isCapturing = true;
+        } elseif ($isCapturing) {
+          if (strpos($line, 'VIDEO_CAPTURE') !== false) {
+            return true;
+          }
+          if (preg_match('/^controls/i', $line)) {
+            $isCapturing = false;
+          }
+        }
+      }
+
+      return false;
+    }
+
     if (!$fullscreen) {
+      $cameras = array();
       foreach (array_diff(glob($video_dev_pref."*"), $video_dev_blacklist) as $filename) {
-        if (!exec("v4l-info ".escapeshellarg($filename)." 2>&1 1>/dev/null")) {
-          $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
+        $retval = null;
+        $output = null;
+        exec("v4l-info ".escapeshellarg($filename)." 2>/dev/null", $output);
+        if (!$retval) {
+          if (findVideoCaptureBlock($output)) {
+            $cameras[substr($filename, strlen($video_dev_pref), 100)] = TRUE;
+          }
         }
       }
       if (!array_key_exists(strval($camera), $cameras)) {
