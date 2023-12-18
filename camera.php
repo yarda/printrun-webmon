@@ -29,7 +29,12 @@ if (!in_array($video_dev_pref . $id, $video_dev_blacklist))
     {
       if (!file_exists($img) || (time() - filemtime($img) > $delay))
       {
-        exec("streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}", $output, $retval);
+        // Set a timeout value in seconds
+        $timeout = 30;
+
+        // Use the timeout command to limit the execution time of streamer
+        $command = "timeout {$timeout}s streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}";
+        exec($command, $output, $retval);
         if ($retval == 0)
         {
             rename($tmp, $img);
