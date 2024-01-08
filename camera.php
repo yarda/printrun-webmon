@@ -19,8 +19,10 @@ header("Pragma: no-cache");
 header("Location: {$img}");
 ob_flush(); flush();
 
-if (!in_array($video_dev_pref . $id, $video_dev_blacklist))
-{
+$cameras = getCameras($video_dev_glob, $rulesets);
+if (array_key_exists(strval($id), $cameras)) {
+  $camera = $cameras[$id];
+
   // generate new shot after redirect
   if (!file_exists($img) || (time() - filemtime($img) > $delay))
   {
@@ -29,10 +31,16 @@ if (!in_array($video_dev_pref . $id, $video_dev_blacklist))
     {
       if (!file_exists($img) || (time() - filemtime($img) > $delay))
       {
-        exec("streamer -q -c /dev/video{$id} -b 16 -s {$img_res} -o {$tmp}", $output, $retval);
+        if (!isset($camera["fswebcam_args"])) {
+          $command = "streamer -q -c {$camera['devicePath']} -b 16 -s {$img_res} -o {$tmp}";
+        } else {
+          $args = array_map('escapeshellarg', $camera["fswebcam_args"]);
+          $command = "fswebcam -q --no-banner --no-timestamp --device {$camera['devicePath']} --resolution {$img_res} --save {$tmp} ". implode(' ', $args);
+        }
+        exec($command, $output, $retval);
         if ($retval == 0)
         {
-            rename($tmp, $img);
+          rename($tmp, $img);
         }
       }
       flock($fp, LOCK_UN);
