@@ -6,6 +6,7 @@
  * The code is copied under GPLv3+. Use it on your own risk.
  */
 
+
 // RPC defaults
 $host = "localhost";
 $path = "/";
@@ -14,8 +15,8 @@ $def_port = 7978;
 $delay = 2; // how long to cache cameras output before new shot is captured
 $cache_delay = 2; // how long to cache in browser in seconds before refresh is needed
 $video_dev_glob = "/dev/video*";
-//$video_dev_blacklist = array("/dev/video0", "/dev/video1");
-$video_dev_blacklist = array();
+$video_dev_blacklist = array("/dev/video0", "/dev/video1", "/dev/video2");
+//$video_dev_blacklist = array();
 $page_title = "3D printer status";
 // resolution of images
 $img_res_preview = "320x240";
@@ -23,7 +24,7 @@ $img_res_full = "1280x720";
 $rulesets = [
   [
     'match_rules' => [
-      ["ID_MODEL", "Integrated_Camera"]
+      ["ID_MODEL_ID", "5405"]
     ],
     'action' => 'ignore'
   ],
@@ -36,11 +37,11 @@ $rulesets = [
   [
     'match_rules' => [
       ["ID_V4L_CAPABILITIES", ":capture:"],
-      ["ID_MODEL_ID", "704d"],
-      ["ID_VENDOR_ID", "0458"],
+      ["ID_MODEL_ID", "4095"],
+      ["ID_VENDOR_ID", "041e"],
     ],
     'fswebcam_args' => [
-      "--s", "45"
+      "--set", "45"
     ],
   ]
 ];
@@ -49,7 +50,7 @@ $rulesets = [
 // safety stop when searching for pronterfaces, if anything goes bad
 // do not probe for more than NUM pronterfaces, under normal conditions
 // it stops probing earlier
-$printers_max = 100;
+$printers_max = 5;
 $status_cache = "data/status-cache";
 $v4l_lock = "/tmp/printrun-webmon-v4l.lock";
 $status_cache_lock = "/tmp/printrun-webmon-status-cache.lock";

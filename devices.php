@@ -1,6 +1,7 @@
 <?php
 require("config.php");
 
+
 /**
  * Gets the information for a single device using udevadm.
  *
