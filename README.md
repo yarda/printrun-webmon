@@ -103,4 +103,4 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 MA 02110-1301, USA.
 
-Full text of the license is enclosed in the COPYING file.
+Full text of the license is enclosed in the [LICENSE](/LICENSE) file.
